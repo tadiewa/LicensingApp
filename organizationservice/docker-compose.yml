@@ -1,0 +1,22 @@
+
+services:
+  organizationservice:
+    image: ostock/organizationservice:0.0.1-SNAPSHOT
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8998:8998"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "SPRING_CLOUD_CONFIG_URI: http://localhost:8071"
+
+
+    networks:
+      backend:
+        aliases:
+          - "organizationservice"
+
+networks:
+  backend:
+    driver: bridge

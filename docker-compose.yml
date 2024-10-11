@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  licensingservice:
+    image: ostock/licensing-service:0.0.1-SNAPSHOT
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8991:8991"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "SPRING_CLOUD_CONFIG_URI=http://localhost:8071"
+    networks:
+      backend:
+        aliases:
+          - "licenseservice"
+
+  organizationservice:
+    image: ostock/organizationservice:0.0.1-SNAPSHOT
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8998:8998"  # Make sure the port is unique for this service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "SPRING_CLOUD_CONFIG_URI=http://localhost:8071"
+    networks:
+      backend:
+        aliases:
+          - "organizationservice"
+
+networks:
+  backend:
+    driver: bridge
