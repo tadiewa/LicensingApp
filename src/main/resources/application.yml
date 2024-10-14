@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: dev
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/tadiewa/LicensingApp/configStore/configStore
+
+server:
+  port: 8071
