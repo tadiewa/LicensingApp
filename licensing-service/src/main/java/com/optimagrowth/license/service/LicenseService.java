@@ -13,14 +13,14 @@ import com.optimagrowth.license.repository.LicenseRepository;
 import com.optimagrowth.license.service.client.OrganizationDiscoveryClient;
 import com.optimagrowth.license.service.client.OrganizationFeignClient;
 import com.optimagrowth.license.service.client.OrganizationRestTemplateClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @Service
@@ -97,4 +97,35 @@ public class LicenseService {
         return organization;
     }
 
+    private void randomlyRunLong(){
+        Random rand = new Random();
+        int randomNum = rand.nextInt(3) + 1;
+        if (randomNum==3) sleep();
+    }
+    private void sleep(){
+        try {
+            Thread.sleep(500000);
+            throw new java.util.concurrent.TimeoutException();
+        } catch (InterruptedException | TimeoutException e) {
+            log.error(e.getMessage());
+        }
+    }
+    @CircuitBreaker(name = "licenseService" ,fallbackMethod= "buildFallbackLicenseList")
+    public List<License> getLicensesByOrganization(String organizationId) throws TimeoutException {
+        randomlyRunLong();
+        return licenseRepository.findByOrganizationId(organizationId);
+    }
+
+
+    private List<License> buildFallbackLicenseList(String organizationId,
+        Throwable t){
+        List<License> fallbackList = new ArrayList<>();
+        License license = new License();
+        license.setLicenseId("0000000-00-00000");
+        license.setOrganizationId(organizationId);
+        license.setProductName(
+                "Sorry no licensing information currently available");
+        fallbackList.add(license);
+        return fallbackList;
+    }
 }
