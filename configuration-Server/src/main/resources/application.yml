@@ -25,7 +25,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: gateway,health,info  # Include gateway endpoints for actuator
+        include: "*"  # Include gateway endpoints for actuator
   endpoint:
     gateway:
       enabled: true  # Ensure gateway actuator endpoints are enabled
