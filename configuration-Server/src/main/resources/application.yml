@@ -1,7 +1,6 @@
 spring:
   application:
     name: config-server
-
   profiles:
     active: dev
   cloud:
@@ -19,8 +18,14 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka-server:8761/eureka/
 
-
-
-
 server:
   port: 8071
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway,health,info  # Include gateway endpoints for actuator
+  endpoint:
+    gateway:
+      enabled: true  # Ensure gateway actuator endpoints are enabled
