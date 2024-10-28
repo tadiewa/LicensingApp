@@ -4,17 +4,25 @@ spring:
 
   cloud:
     config:
-      uri: http://localhost:8071
-
-  config:
-    import: configserver:http://localhost:8071
+      uri: http://localhost:8071  # Config Server URI
 
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+  config:
+    import: configserver:http://localhost:8071  # Importing configuration from the Config Server
 
 
 server:
   port: 8095
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Include gateway endpoints for actuator
+  endpoint:
+    gateway:
+      enabled: true  # Ensure gateway actuator endpoints are enabled
