@@ -4,7 +4,7 @@ services:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Docki-9urfilezx
     ports:
       - "8997:8997"
     environment:
