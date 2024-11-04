@@ -3,10 +3,12 @@ spring:
     name: eureka-server
   cloud:
     config:
-      uri: http://localhost:8071
+      uri: http://localhost:8079
   config:
-    import: configserver:http://localhost:8071
+    import: configserver:http://localhost:8079
 
   loadbalancer:
     ribbon:
       enabled: false
+
+
