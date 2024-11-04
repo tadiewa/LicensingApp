@@ -5,9 +5,9 @@ spring:
     active: dev
   cloud:
     config:
-      uri: http://localhost:8071
+      uri: http://configserver:8079
   config:
-    import: configserver:http://localhost:8071
+    import: configserver:http://configserver:8079
 
 
   resilience4j:
